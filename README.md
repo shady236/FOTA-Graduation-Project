@@ -1,6 +1,9 @@
 # FOTA Graduation Project
 
-In this project, MCU is able to update its application code wirelessly through the internet
+In this project, MCU is able to update its application code wirelessly through the internet.
+ - OEM uploads its update to a server
+ - FOTA ECU checks periodically if there's any updates at the server for any ECU
+ - When update is available at the server, FOTA ECU will receive and forward it to the suitable ECU through CAN bus 
 
 # Hardware Connection
 Figure below shows the hardware connection:

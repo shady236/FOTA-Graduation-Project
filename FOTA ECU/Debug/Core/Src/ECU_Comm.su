@@ -1,0 +1,7 @@
+ECU_Comm.c:18:13:CAN_CallBackFun	8	static
+ECU_Comm.c:25:19:validateRes	24	static
+ECU_Comm.c:64:19:ECU_TxSeg	48	static
+ECU_Comm.c:89:7:ECU_TerminateConn	32	static
+ECU_Comm.c:105:7:ECU_CommInit	64	static
+ECU_Comm.c:148:12:ECU_SendUpdateReq	32	static
+ECU_Comm.c:164:12:ECU_TxRec	32	static

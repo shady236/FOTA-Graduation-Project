@@ -1,0 +1,3 @@
+updates.c:19:13:CAN_CallBackFun	40	static
+updates.c:40:7:updatesInit	64	static
+updates.c:79:7:updatesSetState	16	static

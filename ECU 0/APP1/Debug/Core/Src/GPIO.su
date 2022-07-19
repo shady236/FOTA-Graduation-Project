@@ -1,0 +1,7 @@
+GPIO.c:24:14:GPIO_InitPin	24	static
+GPIO.c:54:14:GPIO_GetNewValueOfCR	32	static
+GPIO.c:119:7:GPIO_InitPins	24	static
+GPIO.c:153:7:GPIO_DeInitPins	24	static
+GPIO.c:179:7:GPIO_LockPinsConfg	24	static
+GPIO.c:193:7:GPIO_SetPinsOutputVoltage	16	static
+GPIO.c:212:18:GPIO_ReadPinInputVoltage	16	static

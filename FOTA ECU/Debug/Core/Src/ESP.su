@@ -1,0 +1,13 @@
+ESP.c:16:11:isStringStartsWith	16	static
+ESP.c:32:11:ESP_CheckErrors	24	static
+ESP.c:57:6:ESP_RxCallBackFun	16	static
+ESP.c:85:4:ESP_ReadRxDataFromServer	24	static
+ESP.c:108:6:ESP_ClrBuffer	4	static
+ESP.c:114:6:ESP_Init	64	static
+ESP.c:148:4:ESP_ConnectToRouter	24	static
+ESP.c:163:4:ESP_SetWiFiMode	16	static
+ESP.c:174:4:ESP_SetAsTCPClient	24	static
+ESP.c:189:4:ESP_EndTCPConnection	16	static
+ESP.c:200:4:ESP_EnableUARTWiFiPassthroughMode	16	static
+ESP.c:211:4:ESP_DisableUARTWiFiPassthroughMode	16	static
+ESP.c:222:4:ESP_StartSendingData	24	static

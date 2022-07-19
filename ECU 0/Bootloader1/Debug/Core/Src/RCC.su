@@ -1,0 +1,4 @@
+RCC.c:3:7:RCC_InitClock	8	static
+RCC.c:165:7:RCC_EnablePeripheralClock	16	static
+RCC.c:181:7:RCC_DisablePeripheralClock	16	static
+RCC.c:198:7:RCC_PeripheralReset	16	static

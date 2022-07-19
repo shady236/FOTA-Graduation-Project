@@ -1,0 +1,1795 @@
+
+Branching_Code.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   0000010c  08000000  08000000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00000930  0800010c  0800010c  0001010c  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  08000a3c  08000a3c  00020004  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  08000a3c  08000a3c  00020004  2**0
+                  CONTENTS
+  4 .ARM          00000000  08000a3c  08000a3c  00020004  2**0
+                  CONTENTS
+  5 .preinit_array 00000000  08000a3c  08000a3c  00020004  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000a3c  08000a3c  00010a3c  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .fini_array   00000004  08000a40  08000a40  00010a40  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data         00000004  20000000  08000a44  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          00000024  20000004  08000a48  00020004  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000600  20000028  08000a48  00020028  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000029  00000000  00000000  00020004  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   000021a9  00000000  00000000  0002002d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_abbrev 00000b1f  00000000  00000000  000221d6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_aranges 00000320  00000000  00000000  00022cf8  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_ranges 000002b0  00000000  00000000  00023018  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_macro  00010b0e  00000000  00000000  000232c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_line   00003042  00000000  00000000  00033dd6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .debug_str    0007c454  00000000  00000000  00036e18  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 19 .comment      0000007b  00000000  00000000  000b326c  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  00000a08  00000000  00000000  000b32e8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+0800010c <__do_global_dtors_aux>:
+ 800010c:	b510      	push	{r4, lr}
+ 800010e:	4c05      	ldr	r4, [pc, #20]	; (8000124 <__do_global_dtors_aux+0x18>)
+ 8000110:	7823      	ldrb	r3, [r4, #0]
+ 8000112:	b933      	cbnz	r3, 8000122 <__do_global_dtors_aux+0x16>
+ 8000114:	4b04      	ldr	r3, [pc, #16]	; (8000128 <__do_global_dtors_aux+0x1c>)
+ 8000116:	b113      	cbz	r3, 800011e <__do_global_dtors_aux+0x12>
+ 8000118:	4804      	ldr	r0, [pc, #16]	; (800012c <__do_global_dtors_aux+0x20>)
+ 800011a:	f3af 8000 	nop.w
+ 800011e:	2301      	movs	r3, #1
+ 8000120:	7023      	strb	r3, [r4, #0]
+ 8000122:	bd10      	pop	{r4, pc}
+ 8000124:	20000004 	.word	0x20000004
+ 8000128:	00000000 	.word	0x00000000
+ 800012c:	08000a24 	.word	0x08000a24
+
+08000130 <frame_dummy>:
+ 8000130:	b508      	push	{r3, lr}
+ 8000132:	4b03      	ldr	r3, [pc, #12]	; (8000140 <frame_dummy+0x10>)
+ 8000134:	b11b      	cbz	r3, 800013e <frame_dummy+0xe>
+ 8000136:	4903      	ldr	r1, [pc, #12]	; (8000144 <frame_dummy+0x14>)
+ 8000138:	4803      	ldr	r0, [pc, #12]	; (8000148 <frame_dummy+0x18>)
+ 800013a:	f3af 8000 	nop.w
+ 800013e:	bd08      	pop	{r3, pc}
+ 8000140:	00000000 	.word	0x00000000
+ 8000144:	20000008 	.word	0x20000008
+ 8000148:	08000a24 	.word	0x08000a24
+
+0800014c <ECU_LoadConfig>:
+
+ECU_Config_t  ecuConfig;
+
+
+void  ECU_LoadConfig(void)
+{
+ 800014c:	b580      	push	{r7, lr}
+ 800014e:	af00      	add	r7, sp, #0
+	FPEC_InitFlash();
+ 8000150:	f000 f8d6 	bl	8000300 <FPEC_InitFlash>
+
+	ecuConfig.activeImg         =  FPEC_ReadByte(BRANCHING_PAGE_NUMBER  , BRANCHING_BYTE_OFFSET  );
+ 8000154:	2100      	movs	r1, #0
+ 8000156:	2005      	movs	r0, #5
+ 8000158:	f000 f9b6 	bl	80004c8 <FPEC_ReadByte>
+ 800015c:	4603      	mov	r3, r0
+ 800015e:	461a      	mov	r2, r3
+ 8000160:	4b09      	ldr	r3, [pc, #36]	; (8000188 <ECU_LoadConfig+0x3c>)
+ 8000162:	701a      	strb	r2, [r3, #0]
+	ecuConfig.activeAppRegion   =  FPEC_ReadByte(ACTIVE_APP_PAGE_NUMBER , ACTIVE_APP_BYTE_OFFSET );
+ 8000164:	2102      	movs	r1, #2
+ 8000166:	2005      	movs	r0, #5
+ 8000168:	f000 f9ae 	bl	80004c8 <FPEC_ReadByte>
+ 800016c:	4603      	mov	r3, r0
+ 800016e:	461a      	mov	r2, r3
+ 8000170:	4b05      	ldr	r3, [pc, #20]	; (8000188 <ECU_LoadConfig+0x3c>)
+ 8000172:	705a      	strb	r2, [r3, #1]
+	ecuConfig.activeBootRegion  =  FPEC_ReadByte(ACTIVE_BOOT_PAGE_NUMBER, ACTIVE_BOOT_BYTE_OFFSET);
+ 8000174:	2101      	movs	r1, #1
+ 8000176:	2005      	movs	r0, #5
+ 8000178:	f000 f9a6 	bl	80004c8 <FPEC_ReadByte>
+ 800017c:	4603      	mov	r3, r0
+ 800017e:	461a      	mov	r2, r3
+ 8000180:	4b01      	ldr	r3, [pc, #4]	; (8000188 <ECU_LoadConfig+0x3c>)
+ 8000182:	709a      	strb	r2, [r3, #2]
+}
+ 8000184:	bf00      	nop
+ 8000186:	bd80      	pop	{r7, pc}
+ 8000188:	20000020 	.word	0x20000020
+
+0800018c <ECU_UpdateConfig>:
+
+
+void  ECU_UpdateConfig(void)
+{
+ 800018c:	b580      	push	{r7, lr}
+ 800018e:	af00      	add	r7, sp, #0
+	FPEC_WriteByte(BRANCHING_PAGE_NUMBER  , BRANCHING_BYTE_OFFSET  , ecuConfig.activeImg);
+ 8000190:	4b0b      	ldr	r3, [pc, #44]	; (80001c0 <ECU_UpdateConfig+0x34>)
+ 8000192:	781b      	ldrb	r3, [r3, #0]
+ 8000194:	461a      	mov	r2, r3
+ 8000196:	2100      	movs	r1, #0
+ 8000198:	2005      	movs	r0, #5
+ 800019a:	f000 f9d7 	bl	800054c <FPEC_WriteByte>
+	FPEC_WriteByte(ACTIVE_APP_PAGE_NUMBER , ACTIVE_APP_BYTE_OFFSET , ecuConfig.activeAppRegion);
+ 800019e:	4b08      	ldr	r3, [pc, #32]	; (80001c0 <ECU_UpdateConfig+0x34>)
+ 80001a0:	785b      	ldrb	r3, [r3, #1]
+ 80001a2:	461a      	mov	r2, r3
+ 80001a4:	2102      	movs	r1, #2
+ 80001a6:	2005      	movs	r0, #5
+ 80001a8:	f000 f9d0 	bl	800054c <FPEC_WriteByte>
+	FPEC_WriteByte(ACTIVE_BOOT_PAGE_NUMBER, ACTIVE_BOOT_BYTE_OFFSET, ecuConfig.activeBootRegion);
+ 80001ac:	4b04      	ldr	r3, [pc, #16]	; (80001c0 <ECU_UpdateConfig+0x34>)
+ 80001ae:	789b      	ldrb	r3, [r3, #2]
+ 80001b0:	461a      	mov	r2, r3
+ 80001b2:	2101      	movs	r1, #1
+ 80001b4:	2005      	movs	r0, #5
+ 80001b6:	f000 f9c9 	bl	800054c <FPEC_WriteByte>
+}
+ 80001ba:	bf00      	nop
+ 80001bc:	bd80      	pop	{r7, pc}
+ 80001be:	bf00      	nop
+ 80001c0:	20000020 	.word	0x20000020
+
+080001c4 <FPEC_UnlockFlash>:
+  * @brief  Unlock the Embedded Flash.
+  * @param  None.
+  * @retval None.
+  */
+static void  FPEC_UnlockFlash(void)
+{
+ 80001c4:	b480      	push	{r7}
+ 80001c6:	af00      	add	r7, sp, #0
+	FLASH->KEYR = KEY1;  //write KEY1
+ 80001c8:	4b04      	ldr	r3, [pc, #16]	; (80001dc <FPEC_UnlockFlash+0x18>)
+ 80001ca:	4a05      	ldr	r2, [pc, #20]	; (80001e0 <FPEC_UnlockFlash+0x1c>)
+ 80001cc:	605a      	str	r2, [r3, #4]
+	FLASH->KEYR = KEY2;  //write KEY2
+ 80001ce:	4b03      	ldr	r3, [pc, #12]	; (80001dc <FPEC_UnlockFlash+0x18>)
+ 80001d0:	4a04      	ldr	r2, [pc, #16]	; (80001e4 <FPEC_UnlockFlash+0x20>)
+ 80001d2:	605a      	str	r2, [r3, #4]
+}
+ 80001d4:	bf00      	nop
+ 80001d6:	46bd      	mov	sp, r7
+ 80001d8:	bc80      	pop	{r7}
+ 80001da:	4770      	bx	lr
+ 80001dc:	40022000 	.word	0x40022000
+ 80001e0:	45670123 	.word	0x45670123
+ 80001e4:	cdef89ab 	.word	0xcdef89ab
+
+080001e8 <FPEC_LockFlash>:
+  * @brief  Lock the Embedded Flash.
+  * @param  None.
+  * @retval None.
+  */
+static void  FPEC_LockFlash(void)
+{
+ 80001e8:	b480      	push	{r7}
+ 80001ea:	af00      	add	r7, sp, #0
+	SET_BIT(FLASH->CR, 7);
+ 80001ec:	4b04      	ldr	r3, [pc, #16]	; (8000200 <FPEC_LockFlash+0x18>)
+ 80001ee:	691b      	ldr	r3, [r3, #16]
+ 80001f0:	4a03      	ldr	r2, [pc, #12]	; (8000200 <FPEC_LockFlash+0x18>)
+ 80001f2:	f043 0380 	orr.w	r3, r3, #128	; 0x80
+ 80001f6:	6113      	str	r3, [r2, #16]
+}
+ 80001f8:	bf00      	nop
+ 80001fa:	46bd      	mov	sp, r7
+ 80001fc:	bc80      	pop	{r7}
+ 80001fe:	4770      	bx	lr
+ 8000200:	40022000 	.word	0x40022000
+
+08000204 <FPEC_CheckErrors>:
+  * @brief  Check if any errors occurred while programming/erasing flash
+  * @param  None
+  * @retval Flash error
+  */
+static FPEC_Error_t  FPEC_CheckErrors(void)
+{
+ 8000204:	b480      	push	{r7}
+ 8000206:	af00      	add	r7, sp, #0
+	if(GET_BIT(FLASH->SR, 4) == 1)
+ 8000208:	4b11      	ldr	r3, [pc, #68]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 800020a:	68db      	ldr	r3, [r3, #12]
+ 800020c:	091b      	lsrs	r3, r3, #4
+ 800020e:	f003 0301 	and.w	r3, r3, #1
+ 8000212:	2b01      	cmp	r3, #1
+ 8000214:	d107      	bne.n	8000226 <FPEC_CheckErrors+0x22>
+	{
+		SET_BIT(FLASH->SR, 4);  //clear flag
+ 8000216:	4b0e      	ldr	r3, [pc, #56]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 8000218:	68db      	ldr	r3, [r3, #12]
+ 800021a:	4a0d      	ldr	r2, [pc, #52]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 800021c:	f043 0310 	orr.w	r3, r3, #16
+ 8000220:	60d3      	str	r3, [r2, #12]
+		return  FPEC_WRITE_PROTECTION_ERROR;
+ 8000222:	2301      	movs	r3, #1
+ 8000224:	e00f      	b.n	8000246 <FPEC_CheckErrors+0x42>
+	}
+	if(GET_BIT(FLASH->SR, 2) == 1)
+ 8000226:	4b0a      	ldr	r3, [pc, #40]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 8000228:	68db      	ldr	r3, [r3, #12]
+ 800022a:	089b      	lsrs	r3, r3, #2
+ 800022c:	f003 0301 	and.w	r3, r3, #1
+ 8000230:	2b01      	cmp	r3, #1
+ 8000232:	d107      	bne.n	8000244 <FPEC_CheckErrors+0x40>
+	{
+		SET_BIT(FLASH->SR, 2);  //clear flag
+ 8000234:	4b06      	ldr	r3, [pc, #24]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 8000236:	68db      	ldr	r3, [r3, #12]
+ 8000238:	4a05      	ldr	r2, [pc, #20]	; (8000250 <FPEC_CheckErrors+0x4c>)
+ 800023a:	f043 0304 	orr.w	r3, r3, #4
+ 800023e:	60d3      	str	r3, [r2, #12]
+		return  FPEC_PROGRAMMING_ERROR;
+ 8000240:	2300      	movs	r3, #0
+ 8000242:	e000      	b.n	8000246 <FPEC_CheckErrors+0x42>
+	}
+	return FPEC_NO_ERRORS;
+ 8000244:	2302      	movs	r3, #2
+}
+ 8000246:	4618      	mov	r0, r3
+ 8000248:	46bd      	mov	sp, r7
+ 800024a:	bc80      	pop	{r7}
+ 800024c:	4770      	bx	lr
+ 800024e:	bf00      	nop
+ 8000250:	40022000 	.word	0x40022000
+
+08000254 <FPEC_DirectWriteHalfWord>:
+  * @note   offsetAddress must be even number
+  * @param  data: actual data you want to write.
+  * @retval Flash error
+  */
+FPEC_Error_t  FPEC_DirectWriteHalfWord(u8 pageNumber, u16 offsetAddress, u16 data)
+{
+ 8000254:	b580      	push	{r7, lr}
+ 8000256:	b084      	sub	sp, #16
+ 8000258:	af00      	add	r7, sp, #0
+ 800025a:	4603      	mov	r3, r0
+ 800025c:	71fb      	strb	r3, [r7, #7]
+ 800025e:	460b      	mov	r3, r1
+ 8000260:	80bb      	strh	r3, [r7, #4]
+ 8000262:	4613      	mov	r3, r2
+ 8000264:	807b      	strh	r3, [r7, #2]
+	if(offsetAddress % 2 == 1)	return FPEC_PROGRAMMING_ERROR;
+ 8000266:	88bb      	ldrh	r3, [r7, #4]
+ 8000268:	f003 0301 	and.w	r3, r3, #1
+ 800026c:	b29b      	uxth	r3, r3
+ 800026e:	2b00      	cmp	r3, #0
+ 8000270:	d001      	beq.n	8000276 <FPEC_DirectWriteHalfWord+0x22>
+ 8000272:	2300      	movs	r3, #0
+ 8000274:	e03d      	b.n	80002f2 <FPEC_DirectWriteHalfWord+0x9e>
+
+	FPEC_Error_t writeStatus = FPEC_NO_ERRORS;
+ 8000276:	2302      	movs	r3, #2
+ 8000278:	73fb      	strb	r3, [r7, #15]
+
+	FPEC_UnlockFlash();
+ 800027a:	f7ff ffa3 	bl	80001c4 <FPEC_UnlockFlash>
+
+	/* Wait if the flash is busy */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 800027e:	bf00      	nop
+ 8000280:	4b1e      	ldr	r3, [pc, #120]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 8000282:	68db      	ldr	r3, [r3, #12]
+ 8000284:	f003 0301 	and.w	r3, r3, #1
+ 8000288:	2b01      	cmp	r3, #1
+ 800028a:	d0f9      	beq.n	8000280 <FPEC_DirectWriteHalfWord+0x2c>
+
+	SET_BIT(FLASH->CR, 0);   //Set bit 0 to select flash programming
+ 800028c:	4b1b      	ldr	r3, [pc, #108]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 800028e:	691b      	ldr	r3, [r3, #16]
+ 8000290:	4a1a      	ldr	r2, [pc, #104]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 8000292:	f043 0301 	orr.w	r3, r3, #1
+ 8000296:	6113      	str	r3, [r2, #16]
+
+	/* Get physical address of the desired half word */
+	volatile u16* physicalAddress = (volatile u16*)(FLASH_BASE_ADDRESS + pageNumber * PAGE_SIZE_BYTES + offsetAddress);
+ 8000298:	79fb      	ldrb	r3, [r7, #7]
+ 800029a:	029b      	lsls	r3, r3, #10
+ 800029c:	461a      	mov	r2, r3
+ 800029e:	88bb      	ldrh	r3, [r7, #4]
+ 80002a0:	4413      	add	r3, r2
+ 80002a2:	f103 6300 	add.w	r3, r3, #134217728	; 0x8000000
+ 80002a6:	60bb      	str	r3, [r7, #8]
+	*physicalAddress = data;
+ 80002a8:	68bb      	ldr	r3, [r7, #8]
+ 80002aa:	887a      	ldrh	r2, [r7, #2]
+ 80002ac:	801a      	strh	r2, [r3, #0]
+
+	/* Wait until writing is completed */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 80002ae:	bf00      	nop
+ 80002b0:	4b12      	ldr	r3, [pc, #72]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 80002b2:	68db      	ldr	r3, [r3, #12]
+ 80002b4:	f003 0301 	and.w	r3, r3, #1
+ 80002b8:	2b01      	cmp	r3, #1
+ 80002ba:	d0f9      	beq.n	80002b0 <FPEC_DirectWriteHalfWord+0x5c>
+
+	CLR_BIT(FLASH->CR, 0);   //clear bit 0 to unselect flash programming
+ 80002bc:	4b0f      	ldr	r3, [pc, #60]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 80002be:	691b      	ldr	r3, [r3, #16]
+ 80002c0:	4a0e      	ldr	r2, [pc, #56]	; (80002fc <FPEC_DirectWriteHalfWord+0xa8>)
+ 80002c2:	f023 0301 	bic.w	r3, r3, #1
+ 80002c6:	6113      	str	r3, [r2, #16]
+
+	/* Read the written half word to make sure it's written successfully */
+	if(FPEC_ReadHalfWord(pageNumber, offsetAddress) == data)
+ 80002c8:	88ba      	ldrh	r2, [r7, #4]
+ 80002ca:	79fb      	ldrb	r3, [r7, #7]
+ 80002cc:	4611      	mov	r1, r2
+ 80002ce:	4618      	mov	r0, r3
+ 80002d0:	f000 f8d8 	bl	8000484 <FPEC_ReadHalfWord>
+ 80002d4:	4603      	mov	r3, r0
+ 80002d6:	461a      	mov	r2, r3
+ 80002d8:	887b      	ldrh	r3, [r7, #2]
+ 80002da:	4293      	cmp	r3, r2
+ 80002dc:	d102      	bne.n	80002e4 <FPEC_DirectWriteHalfWord+0x90>
+	{
+		writeStatus = FPEC_NO_ERRORS;
+ 80002de:	2302      	movs	r3, #2
+ 80002e0:	73fb      	strb	r3, [r7, #15]
+ 80002e2:	e003      	b.n	80002ec <FPEC_DirectWriteHalfWord+0x98>
+	}
+	else
+	{
+		writeStatus =  FPEC_CheckErrors();
+ 80002e4:	f7ff ff8e 	bl	8000204 <FPEC_CheckErrors>
+ 80002e8:	4603      	mov	r3, r0
+ 80002ea:	73fb      	strb	r3, [r7, #15]
+	}
+
+	FPEC_LockFlash();
+ 80002ec:	f7ff ff7c 	bl	80001e8 <FPEC_LockFlash>
+
+	return writeStatus;
+ 80002f0:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 80002f2:	4618      	mov	r0, r3
+ 80002f4:	3710      	adds	r7, #16
+ 80002f6:	46bd      	mov	sp, r7
+ 80002f8:	bd80      	pop	{r7, pc}
+ 80002fa:	bf00      	nop
+ 80002fc:	40022000 	.word	0x40022000
+
+08000300 <FPEC_InitFlash>:
+  * @note   This function must be called once before any reading, writing or erasing.
+  * @param  None.
+  * @retval Flash error.
+  */
+void  FPEC_InitFlash(void)
+{
+ 8000300:	b580      	push	{r7, lr}
+ 8000302:	af00      	add	r7, sp, #0
+	RCC_EnablePeripheralClock(FLITF_PERIPHERAL);
+ 8000304:	2004      	movs	r0, #4
+ 8000306:	f000 fa23 	bl	8000750 <RCC_EnablePeripheralClock>
+	FPEC_UnlockFlash();
+ 800030a:	f7ff ff5b 	bl	80001c4 <FPEC_UnlockFlash>
+#elif  SYSTEM_CLK  <=  48000000
+	SET_BIT(FLASH->ACR, 0);
+	CLR_BIT(FLASH->ACR, 1);
+	CLR_BIT(FLASH->ACR, 2);
+#elif  SYSTEM_CLK  <=  72000000
+	CLR_BIT(FLASH->ACR, 0);
+ 800030e:	4b0b      	ldr	r3, [pc, #44]	; (800033c <FPEC_InitFlash+0x3c>)
+ 8000310:	681b      	ldr	r3, [r3, #0]
+ 8000312:	4a0a      	ldr	r2, [pc, #40]	; (800033c <FPEC_InitFlash+0x3c>)
+ 8000314:	f023 0301 	bic.w	r3, r3, #1
+ 8000318:	6013      	str	r3, [r2, #0]
+	SET_BIT(FLASH->ACR, 1);
+ 800031a:	4b08      	ldr	r3, [pc, #32]	; (800033c <FPEC_InitFlash+0x3c>)
+ 800031c:	681b      	ldr	r3, [r3, #0]
+ 800031e:	4a07      	ldr	r2, [pc, #28]	; (800033c <FPEC_InitFlash+0x3c>)
+ 8000320:	f043 0302 	orr.w	r3, r3, #2
+ 8000324:	6013      	str	r3, [r2, #0]
+	CLR_BIT(FLASH->ACR, 2);
+ 8000326:	4b05      	ldr	r3, [pc, #20]	; (800033c <FPEC_InitFlash+0x3c>)
+ 8000328:	681b      	ldr	r3, [r3, #0]
+ 800032a:	4a04      	ldr	r2, [pc, #16]	; (800033c <FPEC_InitFlash+0x3c>)
+ 800032c:	f023 0304 	bic.w	r3, r3, #4
+ 8000330:	6013      	str	r3, [r2, #0]
+#endif
+
+	FPEC_LockFlash();
+ 8000332:	f7ff ff59 	bl	80001e8 <FPEC_LockFlash>
+}
+ 8000336:	bf00      	nop
+ 8000338:	bd80      	pop	{r7, pc}
+ 800033a:	bf00      	nop
+ 800033c:	40022000 	.word	0x40022000
+
+08000340 <FPEC_ErasePage>:
+  * @param  pageNumber: number of the page to be erased.
+  * @note   There are 128 pages in the flash memory (from page 0 to page 127)
+  * @retval Flash error
+  */
+FPEC_Error_t  FPEC_ErasePage(u8 pageNumber)
+{
+ 8000340:	b580      	push	{r7, lr}
+ 8000342:	b084      	sub	sp, #16
+ 8000344:	af00      	add	r7, sp, #0
+ 8000346:	4603      	mov	r3, r0
+ 8000348:	71fb      	strb	r3, [r7, #7]
+	FPEC_Error_t  eraseStatus;
+
+	FPEC_UnlockFlash();
+ 800034a:	f7ff ff3b 	bl	80001c4 <FPEC_UnlockFlash>
+
+	/* Wait if the flash is busy */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 800034e:	bf00      	nop
+ 8000350:	4b1f      	ldr	r3, [pc, #124]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000352:	68db      	ldr	r3, [r3, #12]
+ 8000354:	f003 0301 	and.w	r3, r3, #1
+ 8000358:	2b01      	cmp	r3, #1
+ 800035a:	d0f9      	beq.n	8000350 <FPEC_ErasePage+0x10>
+
+	SET_BIT(FLASH->CR, 1);   //Set bit 1 to select page erase
+ 800035c:	4b1c      	ldr	r3, [pc, #112]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 800035e:	691b      	ldr	r3, [r3, #16]
+ 8000360:	4a1b      	ldr	r2, [pc, #108]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000362:	f043 0302 	orr.w	r3, r3, #2
+ 8000366:	6113      	str	r3, [r2, #16]
+
+	/* Get address of first byte in the desired page to be erased */
+	u32 pagePhysicalAddress = FLASH_BASE_ADDRESS + pageNumber * PAGE_SIZE_BYTES;
+ 8000368:	79fb      	ldrb	r3, [r7, #7]
+ 800036a:	029b      	lsls	r3, r3, #10
+ 800036c:	f103 6300 	add.w	r3, r3, #134217728	; 0x8000000
+ 8000370:	60bb      	str	r3, [r7, #8]
+	FLASH->AR = pagePhysicalAddress;
+ 8000372:	4a17      	ldr	r2, [pc, #92]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000374:	68bb      	ldr	r3, [r7, #8]
+ 8000376:	6153      	str	r3, [r2, #20]
+
+	SET_BIT(FLASH->CR, 6);   //Start erasing the page
+ 8000378:	4b15      	ldr	r3, [pc, #84]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 800037a:	691b      	ldr	r3, [r3, #16]
+ 800037c:	4a14      	ldr	r2, [pc, #80]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 800037e:	f043 0340 	orr.w	r3, r3, #64	; 0x40
+ 8000382:	6113      	str	r3, [r2, #16]
+
+	/* wait until page erasing is completed */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 8000384:	bf00      	nop
+ 8000386:	4b12      	ldr	r3, [pc, #72]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000388:	68db      	ldr	r3, [r3, #12]
+ 800038a:	f003 0301 	and.w	r3, r3, #1
+ 800038e:	2b01      	cmp	r3, #1
+ 8000390:	d0f9      	beq.n	8000386 <FPEC_ErasePage+0x46>
+
+	CLR_BIT(FLASH->CR, 1);   //Clear bit 1 to unselect page erase
+ 8000392:	4b0f      	ldr	r3, [pc, #60]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000394:	691b      	ldr	r3, [r3, #16]
+ 8000396:	4a0e      	ldr	r2, [pc, #56]	; (80003d0 <FPEC_ErasePage+0x90>)
+ 8000398:	f023 0302 	bic.w	r3, r3, #2
+ 800039c:	6113      	str	r3, [r2, #16]
+
+	/* read first half word of this page to make sure it's erased successfully */
+	if(FPEC_ReadHalfWord(pageNumber, 0) == 0xFFFF)
+ 800039e:	79fb      	ldrb	r3, [r7, #7]
+ 80003a0:	2100      	movs	r1, #0
+ 80003a2:	4618      	mov	r0, r3
+ 80003a4:	f000 f86e 	bl	8000484 <FPEC_ReadHalfWord>
+ 80003a8:	4603      	mov	r3, r0
+ 80003aa:	461a      	mov	r2, r3
+ 80003ac:	f64f 73ff 	movw	r3, #65535	; 0xffff
+ 80003b0:	429a      	cmp	r2, r3
+ 80003b2:	d102      	bne.n	80003ba <FPEC_ErasePage+0x7a>
+	{
+		eraseStatus = FPEC_NO_ERRORS;
+ 80003b4:	2302      	movs	r3, #2
+ 80003b6:	73fb      	strb	r3, [r7, #15]
+ 80003b8:	e003      	b.n	80003c2 <FPEC_ErasePage+0x82>
+	}
+	else
+	{
+		eraseStatus = FPEC_CheckErrors();
+ 80003ba:	f7ff ff23 	bl	8000204 <FPEC_CheckErrors>
+ 80003be:	4603      	mov	r3, r0
+ 80003c0:	73fb      	strb	r3, [r7, #15]
+	}
+
+	FPEC_LockFlash();
+ 80003c2:	f7ff ff11 	bl	80001e8 <FPEC_LockFlash>
+
+	return eraseStatus;
+ 80003c6:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 80003c8:	4618      	mov	r0, r3
+ 80003ca:	3710      	adds	r7, #16
+ 80003cc:	46bd      	mov	sp, r7
+ 80003ce:	bd80      	pop	{r7, pc}
+ 80003d0:	40022000 	.word	0x40022000
+
+080003d4 <FPEC_WritePage>:
+  * @param  pageNumber: number of the page where you want to write.
+  * @param  data: array that contains actual data you want to write.
+  * @retval Flash error.
+  */
+FPEC_Error_t  FPEC_WritePage(u8 pageNumber, u16* data)
+{
+ 80003d4:	b580      	push	{r7, lr}
+ 80003d6:	b084      	sub	sp, #16
+ 80003d8:	af00      	add	r7, sp, #0
+ 80003da:	4603      	mov	r3, r0
+ 80003dc:	6039      	str	r1, [r7, #0]
+ 80003de:	71fb      	strb	r3, [r7, #7]
+	FPEC_Error_t writeStatus = FPEC_NO_ERRORS;
+ 80003e0:	2302      	movs	r3, #2
+ 80003e2:	73fb      	strb	r3, [r7, #15]
+
+	FPEC_UnlockFlash();
+ 80003e4:	f7ff feee 	bl	80001c4 <FPEC_UnlockFlash>
+
+	/* To write on a page, it must be erased first */
+	writeStatus = FPEC_ErasePage(pageNumber);
+ 80003e8:	79fb      	ldrb	r3, [r7, #7]
+ 80003ea:	4618      	mov	r0, r3
+ 80003ec:	f7ff ffa8 	bl	8000340 <FPEC_ErasePage>
+ 80003f0:	4603      	mov	r3, r0
+ 80003f2:	73fb      	strb	r3, [r7, #15]
+
+	/* Write the data on the page by half word at a time */
+	for(u16 i=0; i<PAGE_SIZE_HALF_WORDS; i++)
+ 80003f4:	2300      	movs	r3, #0
+ 80003f6:	81bb      	strh	r3, [r7, #12]
+ 80003f8:	e014      	b.n	8000424 <FPEC_WritePage+0x50>
+	{
+		u16 offsetAddress = i * HALF_WORD_SIZE;
+ 80003fa:	89bb      	ldrh	r3, [r7, #12]
+ 80003fc:	005b      	lsls	r3, r3, #1
+ 80003fe:	817b      	strh	r3, [r7, #10]
+		writeStatus = FPEC_DirectWriteHalfWord(pageNumber, offsetAddress, data[i]);
+ 8000400:	89bb      	ldrh	r3, [r7, #12]
+ 8000402:	005b      	lsls	r3, r3, #1
+ 8000404:	683a      	ldr	r2, [r7, #0]
+ 8000406:	4413      	add	r3, r2
+ 8000408:	881a      	ldrh	r2, [r3, #0]
+ 800040a:	8979      	ldrh	r1, [r7, #10]
+ 800040c:	79fb      	ldrb	r3, [r7, #7]
+ 800040e:	4618      	mov	r0, r3
+ 8000410:	f7ff ff20 	bl	8000254 <FPEC_DirectWriteHalfWord>
+ 8000414:	4603      	mov	r3, r0
+ 8000416:	73fb      	strb	r3, [r7, #15]
+
+		/* If there were errors while writing, don't continue writing */
+		if(writeStatus != FPEC_NO_ERRORS)		break;
+ 8000418:	7bfb      	ldrb	r3, [r7, #15]
+ 800041a:	2b02      	cmp	r3, #2
+ 800041c:	d107      	bne.n	800042e <FPEC_WritePage+0x5a>
+	for(u16 i=0; i<PAGE_SIZE_HALF_WORDS; i++)
+ 800041e:	89bb      	ldrh	r3, [r7, #12]
+ 8000420:	3301      	adds	r3, #1
+ 8000422:	81bb      	strh	r3, [r7, #12]
+ 8000424:	89bb      	ldrh	r3, [r7, #12]
+ 8000426:	f5b3 7f00 	cmp.w	r3, #512	; 0x200
+ 800042a:	d3e6      	bcc.n	80003fa <FPEC_WritePage+0x26>
+ 800042c:	e000      	b.n	8000430 <FPEC_WritePage+0x5c>
+		if(writeStatus != FPEC_NO_ERRORS)		break;
+ 800042e:	bf00      	nop
+	}
+
+	FPEC_LockFlash();
+ 8000430:	f7ff feda 	bl	80001e8 <FPEC_LockFlash>
+
+	return writeStatus;
+ 8000434:	7bfb      	ldrb	r3, [r7, #15]
+}
+ 8000436:	4618      	mov	r0, r3
+ 8000438:	3710      	adds	r7, #16
+ 800043a:	46bd      	mov	sp, r7
+ 800043c:	bd80      	pop	{r7, pc}
+
+0800043e <FPEC_ReadPage>:
+  * @param  pageNumber: number of the page you want to read.
+  * @param  data: the function will fill this array with the data stored in the desired page.
+  * @retval Flash error.
+  */
+void  FPEC_ReadPage(u8 pageNumber, u16* data)
+{
+ 800043e:	b590      	push	{r4, r7, lr}
+ 8000440:	b085      	sub	sp, #20
+ 8000442:	af00      	add	r7, sp, #0
+ 8000444:	4603      	mov	r3, r0
+ 8000446:	6039      	str	r1, [r7, #0]
+ 8000448:	71fb      	strb	r3, [r7, #7]
+	/* Read the whole page by reading half word at a time */
+	for(u16 i=0; i<PAGE_SIZE_HALF_WORDS; i++)
+ 800044a:	2300      	movs	r3, #0
+ 800044c:	81fb      	strh	r3, [r7, #14]
+ 800044e:	e011      	b.n	8000474 <FPEC_ReadPage+0x36>
+	{
+		u16 offsetAddress = i * HALF_WORD_SIZE;
+ 8000450:	89fb      	ldrh	r3, [r7, #14]
+ 8000452:	005b      	lsls	r3, r3, #1
+ 8000454:	81bb      	strh	r3, [r7, #12]
+		data[i] = FPEC_ReadHalfWord(pageNumber, offsetAddress);
+ 8000456:	89fb      	ldrh	r3, [r7, #14]
+ 8000458:	005b      	lsls	r3, r3, #1
+ 800045a:	683a      	ldr	r2, [r7, #0]
+ 800045c:	18d4      	adds	r4, r2, r3
+ 800045e:	89ba      	ldrh	r2, [r7, #12]
+ 8000460:	79fb      	ldrb	r3, [r7, #7]
+ 8000462:	4611      	mov	r1, r2
+ 8000464:	4618      	mov	r0, r3
+ 8000466:	f000 f80d 	bl	8000484 <FPEC_ReadHalfWord>
+ 800046a:	4603      	mov	r3, r0
+ 800046c:	8023      	strh	r3, [r4, #0]
+	for(u16 i=0; i<PAGE_SIZE_HALF_WORDS; i++)
+ 800046e:	89fb      	ldrh	r3, [r7, #14]
+ 8000470:	3301      	adds	r3, #1
+ 8000472:	81fb      	strh	r3, [r7, #14]
+ 8000474:	89fb      	ldrh	r3, [r7, #14]
+ 8000476:	f5b3 7f00 	cmp.w	r3, #512	; 0x200
+ 800047a:	d3e9      	bcc.n	8000450 <FPEC_ReadPage+0x12>
+	}
+}
+ 800047c:	bf00      	nop
+ 800047e:	3714      	adds	r7, #20
+ 8000480:	46bd      	mov	sp, r7
+ 8000482:	bd90      	pop	{r4, r7, pc}
+
+08000484 <FPEC_ReadHalfWord>:
+  * @param  offsetAddress: offset address of the half word you want to read.
+  * @param  data: the function will fill this array with the data stored in the desired page.
+  * @retval data stored in the desired half word.
+  */
+u16  FPEC_ReadHalfWord(u8 pageNumber, u16 offsetAddress)
+{
+ 8000484:	b480      	push	{r7}
+ 8000486:	b085      	sub	sp, #20
+ 8000488:	af00      	add	r7, sp, #0
+ 800048a:	4603      	mov	r3, r0
+ 800048c:	460a      	mov	r2, r1
+ 800048e:	71fb      	strb	r3, [r7, #7]
+ 8000490:	4613      	mov	r3, r2
+ 8000492:	80bb      	strh	r3, [r7, #4]
+	/* Wait if the flash is busy */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 8000494:	bf00      	nop
+ 8000496:	4b0b      	ldr	r3, [pc, #44]	; (80004c4 <FPEC_ReadHalfWord+0x40>)
+ 8000498:	68db      	ldr	r3, [r3, #12]
+ 800049a:	f003 0301 	and.w	r3, r3, #1
+ 800049e:	2b01      	cmp	r3, #1
+ 80004a0:	d0f9      	beq.n	8000496 <FPEC_ReadHalfWord+0x12>
+
+	/* Get physical address of the desired half word */
+	volatile u16* physicalAddress = (volatile u16*)(FLASH_BASE_ADDRESS + pageNumber * PAGE_SIZE_BYTES + offsetAddress);
+ 80004a2:	79fb      	ldrb	r3, [r7, #7]
+ 80004a4:	029b      	lsls	r3, r3, #10
+ 80004a6:	461a      	mov	r2, r3
+ 80004a8:	88bb      	ldrh	r3, [r7, #4]
+ 80004aa:	4413      	add	r3, r2
+ 80004ac:	f103 6300 	add.w	r3, r3, #134217728	; 0x8000000
+ 80004b0:	60fb      	str	r3, [r7, #12]
+
+	/* Read data from this physical address */
+	return *physicalAddress;
+ 80004b2:	68fb      	ldr	r3, [r7, #12]
+ 80004b4:	881b      	ldrh	r3, [r3, #0]
+ 80004b6:	b29b      	uxth	r3, r3
+}
+ 80004b8:	4618      	mov	r0, r3
+ 80004ba:	3714      	adds	r7, #20
+ 80004bc:	46bd      	mov	sp, r7
+ 80004be:	bc80      	pop	{r7}
+ 80004c0:	4770      	bx	lr
+ 80004c2:	bf00      	nop
+ 80004c4:	40022000 	.word	0x40022000
+
+080004c8 <FPEC_ReadByte>:
+  * @param  pageNumber: number of the page you want to read from.
+  * @param  offsetAddress: offset address of the half word you want to read.
+  * @retval data stored in the desired byte.
+  */
+u8  FPEC_ReadByte(u8 pageNumber, u16 offsetAddress)
+{
+ 80004c8:	b580      	push	{r7, lr}
+ 80004ca:	b082      	sub	sp, #8
+ 80004cc:	af00      	add	r7, sp, #0
+ 80004ce:	4603      	mov	r3, r0
+ 80004d0:	460a      	mov	r2, r1
+ 80004d2:	71fb      	strb	r3, [r7, #7]
+ 80004d4:	4613      	mov	r3, r2
+ 80004d6:	80bb      	strh	r3, [r7, #4]
+	/* Wait if the flash is busy */
+	while(GET_BIT(FLASH->SR, 0) == 1) {}
+ 80004d8:	bf00      	nop
+ 80004da:	4b09      	ldr	r3, [pc, #36]	; (8000500 <FPEC_ReadByte+0x38>)
+ 80004dc:	68db      	ldr	r3, [r3, #12]
+ 80004de:	f003 0301 	and.w	r3, r3, #1
+ 80004e2:	2b01      	cmp	r3, #1
+ 80004e4:	d0f9      	beq.n	80004da <FPEC_ReadByte+0x12>
+
+	return (u8)FPEC_ReadHalfWord(pageNumber, offsetAddress);
+ 80004e6:	88ba      	ldrh	r2, [r7, #4]
+ 80004e8:	79fb      	ldrb	r3, [r7, #7]
+ 80004ea:	4611      	mov	r1, r2
+ 80004ec:	4618      	mov	r0, r3
+ 80004ee:	f7ff ffc9 	bl	8000484 <FPEC_ReadHalfWord>
+ 80004f2:	4603      	mov	r3, r0
+ 80004f4:	b2db      	uxtb	r3, r3
+}
+ 80004f6:	4618      	mov	r0, r3
+ 80004f8:	3708      	adds	r7, #8
+ 80004fa:	46bd      	mov	sp, r7
+ 80004fc:	bd80      	pop	{r7, pc}
+ 80004fe:	bf00      	nop
+ 8000500:	40022000 	.word	0x40022000
+
+08000504 <FPEC_ReadWord>:
+  * @param  pageNumber: number of the page you want to read from.
+  * @param  offsetAddress: offset address of the half word you want to read.
+  * @retval data stored in the desired word.
+  */
+u32  FPEC_ReadWord(u8 pageNumber, u8  offsetAddress)
+{
+ 8000504:	b580      	push	{r7, lr}
+ 8000506:	b084      	sub	sp, #16
+ 8000508:	af00      	add	r7, sp, #0
+ 800050a:	4603      	mov	r3, r0
+ 800050c:	460a      	mov	r2, r1
+ 800050e:	71fb      	strb	r3, [r7, #7]
+ 8000510:	4613      	mov	r3, r2
+ 8000512:	71bb      	strb	r3, [r7, #6]
+	u16 firstHalfWord = FPEC_ReadHalfWord(pageNumber, offsetAddress);
+ 8000514:	79bb      	ldrb	r3, [r7, #6]
+ 8000516:	b29a      	uxth	r2, r3
+ 8000518:	79fb      	ldrb	r3, [r7, #7]
+ 800051a:	4611      	mov	r1, r2
+ 800051c:	4618      	mov	r0, r3
+ 800051e:	f7ff ffb1 	bl	8000484 <FPEC_ReadHalfWord>
+ 8000522:	4603      	mov	r3, r0
+ 8000524:	81fb      	strh	r3, [r7, #14]
+	u32 secndHalfWord = FPEC_ReadHalfWord(pageNumber, offsetAddress+2);
+ 8000526:	79bb      	ldrb	r3, [r7, #6]
+ 8000528:	b29b      	uxth	r3, r3
+ 800052a:	3302      	adds	r3, #2
+ 800052c:	b29a      	uxth	r2, r3
+ 800052e:	79fb      	ldrb	r3, [r7, #7]
+ 8000530:	4611      	mov	r1, r2
+ 8000532:	4618      	mov	r0, r3
+ 8000534:	f7ff ffa6 	bl	8000484 <FPEC_ReadHalfWord>
+ 8000538:	4603      	mov	r3, r0
+ 800053a:	60bb      	str	r3, [r7, #8]
+	return  (firstHalfWord | (secndHalfWord<<16));
+ 800053c:	89fa      	ldrh	r2, [r7, #14]
+ 800053e:	68bb      	ldr	r3, [r7, #8]
+ 8000540:	041b      	lsls	r3, r3, #16
+ 8000542:	4313      	orrs	r3, r2
+}
+ 8000544:	4618      	mov	r0, r3
+ 8000546:	3710      	adds	r7, #16
+ 8000548:	46bd      	mov	sp, r7
+ 800054a:	bd80      	pop	{r7, pc}
+
+0800054c <FPEC_WriteByte>:
+  * @param  offsetAddress: offset address of the half word you want to write.
+  * @param  data: actual data you want to write.
+  * @retval Flash error.
+  */
+FPEC_Error_t  FPEC_WriteByte(u8 pageNumber, u16 offsetAddress, u8 data)
+{
+ 800054c:	b590      	push	{r4, r7, lr}
+ 800054e:	f2ad 4d14 	subw	sp, sp, #1044	; 0x414
+ 8000552:	af00      	add	r7, sp, #0
+ 8000554:	4604      	mov	r4, r0
+ 8000556:	4608      	mov	r0, r1
+ 8000558:	4611      	mov	r1, r2
+ 800055a:	1dfb      	adds	r3, r7, #7
+ 800055c:	4622      	mov	r2, r4
+ 800055e:	701a      	strb	r2, [r3, #0]
+ 8000560:	1d3b      	adds	r3, r7, #4
+ 8000562:	4602      	mov	r2, r0
+ 8000564:	801a      	strh	r2, [r3, #0]
+ 8000566:	1dbb      	adds	r3, r7, #6
+ 8000568:	460a      	mov	r2, r1
+ 800056a:	701a      	strb	r2, [r3, #0]
+	/* Read the content of the desired page */
+	u16 pageData[PAGE_SIZE_HALF_WORDS];
+	FPEC_ReadPage(pageNumber, pageData);
+ 800056c:	f107 020c 	add.w	r2, r7, #12
+ 8000570:	1dfb      	adds	r3, r7, #7
+ 8000572:	781b      	ldrb	r3, [r3, #0]
+ 8000574:	4611      	mov	r1, r2
+ 8000576:	4618      	mov	r0, r3
+ 8000578:	f7ff ff61 	bl	800043e <FPEC_ReadPage>
+
+	/* modify the desired byte */
+	u16 originalhalfWord = pageData[offsetAddress/2];
+ 800057c:	1d3b      	adds	r3, r7, #4
+ 800057e:	881b      	ldrh	r3, [r3, #0]
+ 8000580:	085b      	lsrs	r3, r3, #1
+ 8000582:	b29b      	uxth	r3, r3
+ 8000584:	461a      	mov	r2, r3
+ 8000586:	f107 030c 	add.w	r3, r7, #12
+ 800058a:	f833 3012 	ldrh.w	r3, [r3, r2, lsl #1]
+ 800058e:	f8a7 340e 	strh.w	r3, [r7, #1038]	; 0x40e
+	if(offsetAddress % 2 == 0)
+ 8000592:	1d3b      	adds	r3, r7, #4
+ 8000594:	881b      	ldrh	r3, [r3, #0]
+ 8000596:	f003 0301 	and.w	r3, r3, #1
+ 800059a:	b29b      	uxth	r3, r3
+ 800059c:	2b00      	cmp	r3, #0
+ 800059e:	d10e      	bne.n	80005be <FPEC_WriteByte+0x72>
+	{
+		originalhalfWord &= 0xFF00;
+ 80005a0:	f8b7 340e 	ldrh.w	r3, [r7, #1038]	; 0x40e
+ 80005a4:	f023 03ff 	bic.w	r3, r3, #255	; 0xff
+ 80005a8:	f8a7 340e 	strh.w	r3, [r7, #1038]	; 0x40e
+		originalhalfWord |= data;
+ 80005ac:	1dbb      	adds	r3, r7, #6
+ 80005ae:	781b      	ldrb	r3, [r3, #0]
+ 80005b0:	b29a      	uxth	r2, r3
+ 80005b2:	f8b7 340e 	ldrh.w	r3, [r7, #1038]	; 0x40e
+ 80005b6:	4313      	orrs	r3, r2
+ 80005b8:	f8a7 340e 	strh.w	r3, [r7, #1038]	; 0x40e
+ 80005bc:	e00e      	b.n	80005dc <FPEC_WriteByte+0x90>
+	}
+	else
+	{
+		originalhalfWord &= 0x00FF;
+ 80005be:	f8b7 340e 	ldrh.w	r3, [r7, #1038]	; 0x40e
+ 80005c2:	b2db      	uxtb	r3, r3
+ 80005c4:	f8a7 340e 	strh.w	r3, [r7, #1038]	; 0x40e
+		originalhalfWord |= (((u16)data)<<8);
+ 80005c8:	1dbb      	adds	r3, r7, #6
+ 80005ca:	781b      	ldrb	r3, [r3, #0]
+ 80005cc:	021b      	lsls	r3, r3, #8
+ 80005ce:	b21a      	sxth	r2, r3
+ 80005d0:	f9b7 340e 	ldrsh.w	r3, [r7, #1038]	; 0x40e
+ 80005d4:	4313      	orrs	r3, r2
+ 80005d6:	b21b      	sxth	r3, r3
+ 80005d8:	f8a7 340e 	strh.w	r3, [r7, #1038]	; 0x40e
+	}
+	pageData[offsetAddress/2] = originalhalfWord;
+ 80005dc:	1d3b      	adds	r3, r7, #4
+ 80005de:	881b      	ldrh	r3, [r3, #0]
+ 80005e0:	085b      	lsrs	r3, r3, #1
+ 80005e2:	b29b      	uxth	r3, r3
+ 80005e4:	4619      	mov	r1, r3
+ 80005e6:	f107 030c 	add.w	r3, r7, #12
+ 80005ea:	f8b7 240e 	ldrh.w	r2, [r7, #1038]	; 0x40e
+ 80005ee:	f823 2011 	strh.w	r2, [r3, r1, lsl #1]
+
+	/* Erase page */
+	FPEC_Error_t eraseStatus = FPEC_ErasePage(pageNumber);
+ 80005f2:	1dfb      	adds	r3, r7, #7
+ 80005f4:	781b      	ldrb	r3, [r3, #0]
+ 80005f6:	4618      	mov	r0, r3
+ 80005f8:	f7ff fea2 	bl	8000340 <FPEC_ErasePage>
+ 80005fc:	4603      	mov	r3, r0
+ 80005fe:	f887 340d 	strb.w	r3, [r7, #1037]	; 0x40d
+	if(eraseStatus != FPEC_NO_ERRORS)
+ 8000602:	f897 340d 	ldrb.w	r3, [r7, #1037]	; 0x40d
+ 8000606:	2b02      	cmp	r3, #2
+ 8000608:	d002      	beq.n	8000610 <FPEC_WriteByte+0xc4>
+	{
+		return eraseStatus;
+ 800060a:	f897 340d 	ldrb.w	r3, [r7, #1037]	; 0x40d
+ 800060e:	e012      	b.n	8000636 <FPEC_WriteByte+0xea>
+	}
+
+	/* Rewrite the page again after modifications */
+	FPEC_Error_t writeStatus = FPEC_WritePage(pageNumber, pageData);
+ 8000610:	f107 020c 	add.w	r2, r7, #12
+ 8000614:	1dfb      	adds	r3, r7, #7
+ 8000616:	781b      	ldrb	r3, [r3, #0]
+ 8000618:	4611      	mov	r1, r2
+ 800061a:	4618      	mov	r0, r3
+ 800061c:	f7ff feda 	bl	80003d4 <FPEC_WritePage>
+ 8000620:	4603      	mov	r3, r0
+ 8000622:	f887 340c 	strb.w	r3, [r7, #1036]	; 0x40c
+	if(writeStatus != FPEC_NO_ERRORS)
+ 8000626:	f897 340c 	ldrb.w	r3, [r7, #1036]	; 0x40c
+ 800062a:	2b02      	cmp	r3, #2
+ 800062c:	d002      	beq.n	8000634 <FPEC_WriteByte+0xe8>
+	{
+		return writeStatus;
+ 800062e:	f897 340c 	ldrb.w	r3, [r7, #1036]	; 0x40c
+ 8000632:	e000      	b.n	8000636 <FPEC_WriteByte+0xea>
+	}
+
+	return FPEC_NO_ERRORS;
+ 8000634:	2302      	movs	r3, #2
+}
+ 8000636:	4618      	mov	r0, r3
+ 8000638:	f207 4714 	addw	r7, r7, #1044	; 0x414
+ 800063c:	46bd      	mov	sp, r7
+ 800063e:	bd90      	pop	{r4, r7, pc}
+
+08000640 <NVIC_RealocateVectorTable>:
+
+
+
+
+void  NVIC_RealocateVectorTable(VectorTableRegion_t region, u32 offsetAddress)
+{
+ 8000640:	b480      	push	{r7}
+ 8000642:	b083      	sub	sp, #12
+ 8000644:	af00      	add	r7, sp, #0
+ 8000646:	4603      	mov	r3, r0
+ 8000648:	6039      	str	r1, [r7, #0]
+ 800064a:	71fb      	strb	r3, [r7, #7]
+	if( (offsetAddress & 0x1FF) == 0 )   //offsetAddress must be aligned for 128 words (512 bit)
+ 800064c:	683b      	ldr	r3, [r7, #0]
+ 800064e:	f3c3 0308 	ubfx	r3, r3, #0, #9
+ 8000652:	2b00      	cmp	r3, #0
+ 8000654:	d108      	bne.n	8000668 <NVIC_RealocateVectorTable+0x28>
+	{
+		SCB->VTOR = (offsetAddress & 0x1FFFFE00) | (region<<29);
+ 8000656:	683a      	ldr	r2, [r7, #0]
+ 8000658:	4b06      	ldr	r3, [pc, #24]	; (8000674 <NVIC_RealocateVectorTable+0x34>)
+ 800065a:	4013      	ands	r3, r2
+ 800065c:	79fa      	ldrb	r2, [r7, #7]
+ 800065e:	0752      	lsls	r2, r2, #29
+ 8000660:	4611      	mov	r1, r2
+ 8000662:	4a05      	ldr	r2, [pc, #20]	; (8000678 <NVIC_RealocateVectorTable+0x38>)
+ 8000664:	430b      	orrs	r3, r1
+ 8000666:	6093      	str	r3, [r2, #8]
+	}
+}
+ 8000668:	bf00      	nop
+ 800066a:	370c      	adds	r7, #12
+ 800066c:	46bd      	mov	sp, r7
+ 800066e:	bc80      	pop	{r7}
+ 8000670:	4770      	bx	lr
+ 8000672:	bf00      	nop
+ 8000674:	1ffffe00 	.word	0x1ffffe00
+ 8000678:	e000ed00 	.word	0xe000ed00
+
+0800067c <NVIC_MaskIRQs>:
+	}
+}
+
+
+void  NVIC_MaskIRQs(u8 thresholdPriority)
+{
+ 800067c:	b480      	push	{r7}
+ 800067e:	b085      	sub	sp, #20
+ 8000680:	af00      	add	r7, sp, #0
+ 8000682:	4603      	mov	r3, r0
+ 8000684:	71fb      	strb	r3, [r7, #7]
+	__set_BASEPRI(thresholdPriority);
+ 8000686:	79fb      	ldrb	r3, [r7, #7]
+ 8000688:	60bb      	str	r3, [r7, #8]
+  \details Assigns the given value to the Base Priority register.
+  \param [in]    basePri  Base Priority value to set
+ */
+__STATIC_FORCEINLINE void __set_BASEPRI(uint32_t basePri)
+{
+  __ASM volatile ("MSR basepri, %0" : : "r" (basePri) : "memory");
+ 800068a:	68bb      	ldr	r3, [r7, #8]
+ 800068c:	f383 8811 	msr	BASEPRI, r3
+ 8000690:	2301      	movs	r3, #1
+ 8000692:	60fb      	str	r3, [r7, #12]
+  __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+ 8000694:	68fb      	ldr	r3, [r7, #12]
+ 8000696:	f383 8810 	msr	PRIMASK, r3
+	__set_PRIMASK(1);
+}
+ 800069a:	bf00      	nop
+ 800069c:	3714      	adds	r7, #20
+ 800069e:	46bd      	mov	sp, r7
+ 80006a0:	bc80      	pop	{r7}
+ 80006a2:	4770      	bx	lr
+
+080006a4 <RCC_InitClock>:
+#include "RCC.h"
+
+void  RCC_InitClock(void)
+{
+ 80006a4:	b580      	push	{r7, lr}
+ 80006a6:	af00      	add	r7, sp, #0
+	RCC->CR = 0x1;   //enable HSI
+ 80006a8:	4b28      	ldr	r3, [pc, #160]	; (800074c <RCC_InitClock+0xa8>)
+ 80006aa:	2201      	movs	r2, #1
+ 80006ac:	601a      	str	r2, [r3, #0]
+	RCC->CFGR = 0;   //select HSI as system clock
+ 80006ae:	4b27      	ldr	r3, [pc, #156]	; (800074c <RCC_InitClock+0xa8>)
+ 80006b0:	2200      	movs	r2, #0
+ 80006b2:	605a      	str	r2, [r3, #4]
+	RCC->CIR  = 0x9F0000;   //disable all RCC interrupts , clear all flags
+ 80006b4:	4b25      	ldr	r3, [pc, #148]	; (800074c <RCC_InitClock+0xa8>)
+ 80006b6:	f44f 021f 	mov.w	r2, #10420224	; 0x9f0000
+ 80006ba:	609a      	str	r2, [r3, #8]
+	
+	RCC_EnablePeripheralClock(FLITF_PERIPHERAL);
+ 80006bc:	2004      	movs	r0, #4
+ 80006be:	f000 f847 	bl	8000750 <RCC_EnablePeripheralClock>
+	FPEC_InitFlash();
+ 80006c2:	f7ff fe1d 	bl	8000300 <FPEC_InitFlash>
+	
+	
+	#if  APB1_DIVISION_FACTOR == 1
+		/* do nothing, AHB division factor is already 1 */
+	#elif  APB1_DIVISION_FACTOR == 2
+		RCC->CFGR |= 0x400;
+ 80006c6:	4b21      	ldr	r3, [pc, #132]	; (800074c <RCC_InitClock+0xa8>)
+ 80006c8:	685b      	ldr	r3, [r3, #4]
+ 80006ca:	4a20      	ldr	r2, [pc, #128]	; (800074c <RCC_InitClock+0xa8>)
+ 80006cc:	f443 6380 	orr.w	r3, r3, #1024	; 0x400
+ 80006d0:	6053      	str	r3, [r2, #4]
+	#endif
+	
+	
+
+	#if  CLK_SECURITY_SYSTEM_STATE == ENABLED
+		SET_BIT(RCC->CR, 19);
+ 80006d2:	4b1e      	ldr	r3, [pc, #120]	; (800074c <RCC_InitClock+0xa8>)
+ 80006d4:	681b      	ldr	r3, [r3, #0]
+ 80006d6:	4a1d      	ldr	r2, [pc, #116]	; (800074c <RCC_InitClock+0xa8>)
+ 80006d8:	f443 2300 	orr.w	r3, r3, #524288	; 0x80000
+ 80006dc:	6013      	str	r3, [r2, #0]
+	#if  HSE_STATE == ENABLED
+		#if  HSE_SRC == HSE_RC
+			SET_BIT(RCC->CR, 18);  //select RC as HSE
+		#endif
+		
+		SET_BIT(RCC->CR, 16);   //enable HSE
+ 80006de:	4b1b      	ldr	r3, [pc, #108]	; (800074c <RCC_InitClock+0xa8>)
+ 80006e0:	681b      	ldr	r3, [r3, #0]
+ 80006e2:	4a1a      	ldr	r2, [pc, #104]	; (800074c <RCC_InitClock+0xa8>)
+ 80006e4:	f443 3380 	orr.w	r3, r3, #65536	; 0x10000
+ 80006e8:	6013      	str	r3, [r2, #0]
+		while(GET_BIT(RCC->CR, 17) == 0);   //wait until HSE is ready
+ 80006ea:	bf00      	nop
+ 80006ec:	4b17      	ldr	r3, [pc, #92]	; (800074c <RCC_InitClock+0xa8>)
+ 80006ee:	681b      	ldr	r3, [r3, #0]
+ 80006f0:	0c5b      	lsrs	r3, r3, #17
+ 80006f2:	f003 0301 	and.w	r3, r3, #1
+ 80006f6:	2b00      	cmp	r3, #0
+ 80006f8:	d0f8      	beq.n	80006ec <RCC_InitClock+0x48>
+	
+	
+	
+	#if  PLL_STATE == ENABLED
+		#if  PLL_SRC == HSE
+			SET_BIT(RCC->CFGR, 16);   //select HSE as PLL input clock 
+ 80006fa:	4b14      	ldr	r3, [pc, #80]	; (800074c <RCC_InitClock+0xa8>)
+ 80006fc:	685b      	ldr	r3, [r3, #4]
+ 80006fe:	4a13      	ldr	r2, [pc, #76]	; (800074c <RCC_InitClock+0xa8>)
+ 8000700:	f443 3380 	orr.w	r3, r3, #65536	; 0x10000
+ 8000704:	6053      	str	r3, [r2, #4]
+			SET_BIT(RCC->CFGR, 16);   //select HSE/2 as PLL input clock 
+		#elif  PLL_SRC == HSI_DIVIDED_BY_2
+			/* do nothing, HSI/2 is already selected as PLL input clock */
+		#endif
+		
+		RCC->CFGR |= ((PLL_FACTOR-2)<<18);   //select PLL multiplication factor
+ 8000706:	4b11      	ldr	r3, [pc, #68]	; (800074c <RCC_InitClock+0xa8>)
+ 8000708:	685b      	ldr	r3, [r3, #4]
+ 800070a:	4a10      	ldr	r2, [pc, #64]	; (800074c <RCC_InitClock+0xa8>)
+ 800070c:	f443 13e0 	orr.w	r3, r3, #1835008	; 0x1c0000
+ 8000710:	6053      	str	r3, [r2, #4]
+		SET_BIT(RCC->CR, 24);                //enable PLL
+ 8000712:	4b0e      	ldr	r3, [pc, #56]	; (800074c <RCC_InitClock+0xa8>)
+ 8000714:	681b      	ldr	r3, [r3, #0]
+ 8000716:	4a0d      	ldr	r2, [pc, #52]	; (800074c <RCC_InitClock+0xa8>)
+ 8000718:	f043 7380 	orr.w	r3, r3, #16777216	; 0x1000000
+ 800071c:	6013      	str	r3, [r2, #0]
+		while(GET_BIT(RCC->CR, 25) == 0);    //wait until PLL is ready
+ 800071e:	bf00      	nop
+ 8000720:	4b0a      	ldr	r3, [pc, #40]	; (800074c <RCC_InitClock+0xa8>)
+ 8000722:	681b      	ldr	r3, [r3, #0]
+ 8000724:	0e5b      	lsrs	r3, r3, #25
+ 8000726:	f003 0301 	and.w	r3, r3, #1
+ 800072a:	2b00      	cmp	r3, #0
+ 800072c:	d0f8      	beq.n	8000720 <RCC_InitClock+0x7c>
+		
+		#if  CLK_TYPE == PLL
+			SET_BIT(RCC->CFGR, 1);   //select PLL as system clock
+ 800072e:	4b07      	ldr	r3, [pc, #28]	; (800074c <RCC_InitClock+0xa8>)
+ 8000730:	685b      	ldr	r3, [r3, #4]
+ 8000732:	4a06      	ldr	r2, [pc, #24]	; (800074c <RCC_InitClock+0xa8>)
+ 8000734:	f043 0302 	orr.w	r3, r3, #2
+ 8000738:	6053      	str	r3, [r2, #4]
+			while( (RCC->CFGR & 0xC) != 0x8);   //wait until PLL is used as system clock
+ 800073a:	bf00      	nop
+ 800073c:	4b03      	ldr	r3, [pc, #12]	; (800074c <RCC_InitClock+0xa8>)
+ 800073e:	685b      	ldr	r3, [r3, #4]
+ 8000740:	f003 030c 	and.w	r3, r3, #12
+ 8000744:	2b08      	cmp	r3, #8
+ 8000746:	d1f9      	bne.n	800073c <RCC_InitClock+0x98>
+	
+	#if  HSI_STATE == DISABLED
+		CLR_BIT(RCC->CR, 0);
+	#endif
+	
+}
+ 8000748:	bf00      	nop
+ 800074a:	bd80      	pop	{r7, pc}
+ 800074c:	40021000 	.word	0x40021000
+
+08000750 <RCC_EnablePeripheralClock>:
+
+
+void  RCC_EnablePeripheralClock (uint8_t peripheral)
+{
+ 8000750:	b480      	push	{r7}
+ 8000752:	b083      	sub	sp, #12
+ 8000754:	af00      	add	r7, sp, #0
+ 8000756:	4603      	mov	r3, r0
+ 8000758:	71fb      	strb	r3, [r7, #7]
+	if(peripheral < 32)    //if peripheral is connected to AHB
+ 800075a:	79fb      	ldrb	r3, [r7, #7]
+ 800075c:	2b1f      	cmp	r3, #31
+ 800075e:	d809      	bhi.n	8000774 <RCC_EnablePeripheralClock+0x24>
+	{
+		SET_BIT(RCC->AHBENR, peripheral);
+ 8000760:	4b14      	ldr	r3, [pc, #80]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 8000762:	695a      	ldr	r2, [r3, #20]
+ 8000764:	79fb      	ldrb	r3, [r7, #7]
+ 8000766:	2101      	movs	r1, #1
+ 8000768:	fa01 f303 	lsl.w	r3, r1, r3
+ 800076c:	4911      	ldr	r1, [pc, #68]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 800076e:	4313      	orrs	r3, r2
+ 8000770:	614b      	str	r3, [r1, #20]
+	}
+	else if(peripheral < 96)    //if peripheral is connected to APB2
+	{
+		SET_BIT(RCC->APB2ENR, peripheral-64);
+	}
+}
+ 8000772:	e01a      	b.n	80007aa <RCC_EnablePeripheralClock+0x5a>
+	else if(peripheral < 64)    //if peripheral is connected to APB1
+ 8000774:	79fb      	ldrb	r3, [r7, #7]
+ 8000776:	2b3f      	cmp	r3, #63	; 0x3f
+ 8000778:	d80a      	bhi.n	8000790 <RCC_EnablePeripheralClock+0x40>
+		SET_BIT(RCC->APB1ENR, peripheral-32);
+ 800077a:	4b0e      	ldr	r3, [pc, #56]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 800077c:	69da      	ldr	r2, [r3, #28]
+ 800077e:	79fb      	ldrb	r3, [r7, #7]
+ 8000780:	3b20      	subs	r3, #32
+ 8000782:	2101      	movs	r1, #1
+ 8000784:	fa01 f303 	lsl.w	r3, r1, r3
+ 8000788:	490a      	ldr	r1, [pc, #40]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 800078a:	4313      	orrs	r3, r2
+ 800078c:	61cb      	str	r3, [r1, #28]
+}
+ 800078e:	e00c      	b.n	80007aa <RCC_EnablePeripheralClock+0x5a>
+	else if(peripheral < 96)    //if peripheral is connected to APB2
+ 8000790:	79fb      	ldrb	r3, [r7, #7]
+ 8000792:	2b5f      	cmp	r3, #95	; 0x5f
+ 8000794:	d809      	bhi.n	80007aa <RCC_EnablePeripheralClock+0x5a>
+		SET_BIT(RCC->APB2ENR, peripheral-64);
+ 8000796:	4b07      	ldr	r3, [pc, #28]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 8000798:	699a      	ldr	r2, [r3, #24]
+ 800079a:	79fb      	ldrb	r3, [r7, #7]
+ 800079c:	3b40      	subs	r3, #64	; 0x40
+ 800079e:	2101      	movs	r1, #1
+ 80007a0:	fa01 f303 	lsl.w	r3, r1, r3
+ 80007a4:	4903      	ldr	r1, [pc, #12]	; (80007b4 <RCC_EnablePeripheralClock+0x64>)
+ 80007a6:	4313      	orrs	r3, r2
+ 80007a8:	618b      	str	r3, [r1, #24]
+}
+ 80007aa:	bf00      	nop
+ 80007ac:	370c      	adds	r7, #12
+ 80007ae:	46bd      	mov	sp, r7
+ 80007b0:	bc80      	pop	{r7}
+ 80007b2:	4770      	bx	lr
+ 80007b4:	40021000 	.word	0x40021000
+
+080007b8 <main>:
+void  jumpToApp(void);
+void  jumpToBoot(void);
+
+
+int main(void)
+{
+ 80007b8:	b580      	push	{r7, lr}
+ 80007ba:	af00      	add	r7, sp, #0
+	NVIC_MaskIRQs(1);
+ 80007bc:	2001      	movs	r0, #1
+ 80007be:	f7ff ff5d 	bl	800067c <NVIC_MaskIRQs>
+	RCC_InitClock();
+ 80007c2:	f7ff ff6f 	bl	80006a4 <RCC_InitClock>
+
+	ECU_LoadConfig();
+ 80007c6:	f7ff fcc1 	bl	800014c <ECU_LoadConfig>
+
+	/* Jump to destination */
+	switch(ecuConfig.activeImg)
+ 80007ca:	4b0a      	ldr	r3, [pc, #40]	; (80007f4 <main+0x3c>)
+ 80007cc:	781b      	ldrb	r3, [r3, #0]
+ 80007ce:	2b41      	cmp	r3, #65	; 0x41
+ 80007d0:	d102      	bne.n	80007d8 <main+0x20>
+	{
+		case APP:
+			jumpToApp();
+ 80007d2:	f000 f811 	bl	80007f8 <jumpToApp>
+		break;
+ 80007d6:	e002      	b.n	80007de <main+0x26>
+
+		case BOOTLOADER:
+		default:
+			jumpToBoot();
+ 80007d8:	f000 f854 	bl	8000884 <jumpToBoot>
+		break;
+ 80007dc:	bf00      	nop
+	}
+
+	ecuConfig.activeBootRegion = 1;
+ 80007de:	4b05      	ldr	r3, [pc, #20]	; (80007f4 <main+0x3c>)
+ 80007e0:	2201      	movs	r2, #1
+ 80007e2:	709a      	strb	r2, [r3, #2]
+	jumpToBoot();
+ 80007e4:	f000 f84e 	bl	8000884 <jumpToBoot>
+
+	ecuConfig.activeBootRegion = 2;
+ 80007e8:	4b02      	ldr	r3, [pc, #8]	; (80007f4 <main+0x3c>)
+ 80007ea:	2202      	movs	r2, #2
+ 80007ec:	709a      	strb	r2, [r3, #2]
+	jumpToBoot();
+ 80007ee:	f000 f849 	bl	8000884 <jumpToBoot>
+
+	while(1)
+ 80007f2:	e7fe      	b.n	80007f2 <main+0x3a>
+ 80007f4:	20000020 	.word	0x20000020
+
+080007f8 <jumpToApp>:
+}
+
+
+
+void  jumpToApp(void)
+{
+ 80007f8:	b580      	push	{r7, lr}
+ 80007fa:	b084      	sub	sp, #16
+ 80007fc:	af00      	add	r7, sp, #0
+	ecuConfig.activeImg = APP;
+ 80007fe:	4b20      	ldr	r3, [pc, #128]	; (8000880 <jumpToApp+0x88>)
+ 8000800:	2241      	movs	r2, #65	; 0x41
+ 8000802:	701a      	strb	r2, [r3, #0]
+
+	u8 distAppStrtPage;
+	switch(ecuConfig.activeAppRegion)
+ 8000804:	4b1e      	ldr	r3, [pc, #120]	; (8000880 <jumpToApp+0x88>)
+ 8000806:	785b      	ldrb	r3, [r3, #1]
+ 8000808:	2b01      	cmp	r3, #1
+ 800080a:	d002      	beq.n	8000812 <jumpToApp+0x1a>
+ 800080c:	2b02      	cmp	r3, #2
+ 800080e:	d003      	beq.n	8000818 <jumpToApp+0x20>
+ 8000810:	e005      	b.n	800081e <jumpToApp+0x26>
+	{
+		case 1:
+			distAppStrtPage = APP1_STRT_PAGE;
+ 8000812:	231c      	movs	r3, #28
+ 8000814:	73fb      	strb	r3, [r7, #15]
+		break;
+ 8000816:	e005      	b.n	8000824 <jumpToApp+0x2c>
+
+		case 2:
+			distAppStrtPage = APP2_STRT_PAGE;
+ 8000818:	234e      	movs	r3, #78	; 0x4e
+ 800081a:	73fb      	strb	r3, [r7, #15]
+		break;
+ 800081c:	e002      	b.n	8000824 <jumpToApp+0x2c>
+
+		default:
+			jumpToBoot();
+ 800081e:	f000 f831 	bl	8000884 <jumpToBoot>
+		break;
+ 8000822:	bf00      	nop
+	}
+
+	void (*disResetHandler)(void) = (void*) FPEC_ReadWord(distAppStrtPage, 4);
+ 8000824:	7bfb      	ldrb	r3, [r7, #15]
+ 8000826:	2104      	movs	r1, #4
+ 8000828:	4618      	mov	r0, r3
+ 800082a:	f7ff fe6b 	bl	8000504 <FPEC_ReadWord>
+ 800082e:	4603      	mov	r3, r0
+ 8000830:	60bb      	str	r3, [r7, #8]
+	if((u32)disResetHandler == 0xFFFFFFFF)   // If there's NO App in this destination, jump to active Bootloader
+ 8000832:	68bb      	ldr	r3, [r7, #8]
+ 8000834:	f1b3 3fff 	cmp.w	r3, #4294967295
+ 8000838:	d102      	bne.n	8000840 <jumpToApp+0x48>
+	{
+		jumpToBoot();
+ 800083a:	f000 f823 	bl	8000884 <jumpToBoot>
+		NVIC_RealocateVectorTable(FLASH_REGION, FLASH_BASE + distAppStrtPage * PAGE_SIZE_BYTES);
+		__set_CONTROL(0);     // Privilege mode + use MSP as Stack Pointer
+		__set_MSP(FPEC_ReadWord(distAppStrtPage, 0));    // Read initial Stack Pointer value, load it in MSP
+		disResetHandler();   // direct jump to destination App
+	}
+}
+ 800083e:	e01a      	b.n	8000876 <jumpToApp+0x7e>
+		ECU_UpdateConfig();
+ 8000840:	f7ff fca4 	bl	800018c <ECU_UpdateConfig>
+		NVIC_RealocateVectorTable(FLASH_REGION, FLASH_BASE + distAppStrtPage * PAGE_SIZE_BYTES);
+ 8000844:	7bfb      	ldrb	r3, [r7, #15]
+ 8000846:	029b      	lsls	r3, r3, #10
+ 8000848:	f103 6300 	add.w	r3, r3, #134217728	; 0x8000000
+ 800084c:	4619      	mov	r1, r3
+ 800084e:	2000      	movs	r0, #0
+ 8000850:	f7ff fef6 	bl	8000640 <NVIC_RealocateVectorTable>
+ 8000854:	2300      	movs	r3, #0
+ 8000856:	603b      	str	r3, [r7, #0]
+  __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+ 8000858:	683b      	ldr	r3, [r7, #0]
+ 800085a:	f383 8814 	msr	CONTROL, r3
+		__set_MSP(FPEC_ReadWord(distAppStrtPage, 0));    // Read initial Stack Pointer value, load it in MSP
+ 800085e:	7bfb      	ldrb	r3, [r7, #15]
+ 8000860:	2100      	movs	r1, #0
+ 8000862:	4618      	mov	r0, r3
+ 8000864:	f7ff fe4e 	bl	8000504 <FPEC_ReadWord>
+ 8000868:	4603      	mov	r3, r0
+ 800086a:	607b      	str	r3, [r7, #4]
+  __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+ 800086c:	687b      	ldr	r3, [r7, #4]
+ 800086e:	f383 8808 	msr	MSP, r3
+		disResetHandler();   // direct jump to destination App
+ 8000872:	68bb      	ldr	r3, [r7, #8]
+ 8000874:	4798      	blx	r3
+}
+ 8000876:	bf00      	nop
+ 8000878:	3710      	adds	r7, #16
+ 800087a:	46bd      	mov	sp, r7
+ 800087c:	bd80      	pop	{r7, pc}
+ 800087e:	bf00      	nop
+ 8000880:	20000020 	.word	0x20000020
+
+08000884 <jumpToBoot>:
+
+
+void  jumpToBoot(void)
+{
+ 8000884:	b580      	push	{r7, lr}
+ 8000886:	b084      	sub	sp, #16
+ 8000888:	af00      	add	r7, sp, #0
+	ecuConfig.activeImg = BOOTLOADER;
+ 800088a:	4b20      	ldr	r3, [pc, #128]	; (800090c <jumpToBoot+0x88>)
+ 800088c:	2242      	movs	r2, #66	; 0x42
+ 800088e:	701a      	strb	r2, [r3, #0]
+
+	u8 distBootStrtPage;
+	switch(ecuConfig.activeBootRegion)
+ 8000890:	4b1e      	ldr	r3, [pc, #120]	; (800090c <jumpToBoot+0x88>)
+ 8000892:	789b      	ldrb	r3, [r3, #2]
+ 8000894:	2b01      	cmp	r3, #1
+ 8000896:	d002      	beq.n	800089e <jumpToBoot+0x1a>
+ 8000898:	2b02      	cmp	r3, #2
+ 800089a:	d003      	beq.n	80008a4 <jumpToBoot+0x20>
+ 800089c:	e005      	b.n	80008aa <jumpToBoot+0x26>
+	{
+		case 1:
+			distBootStrtPage = BOOT1_STRT_PAGE;
+ 800089e:	2306      	movs	r3, #6
+ 80008a0:	73fb      	strb	r3, [r7, #15]
+		break;
+ 80008a2:	e008      	b.n	80008b6 <jumpToBoot+0x32>
+
+		case 2:
+			distBootStrtPage = BOOT2_STRT_PAGE;
+ 80008a4:	2311      	movs	r3, #17
+ 80008a6:	73fb      	strb	r3, [r7, #15]
+		break;
+ 80008a8:	e005      	b.n	80008b6 <jumpToBoot+0x32>
+
+		default:
+			ecuConfig.activeBootRegion = 1;
+ 80008aa:	4b18      	ldr	r3, [pc, #96]	; (800090c <jumpToBoot+0x88>)
+ 80008ac:	2201      	movs	r2, #1
+ 80008ae:	709a      	strb	r2, [r3, #2]
+			distBootStrtPage = BOOT1_STRT_PAGE;
+ 80008b0:	2306      	movs	r3, #6
+ 80008b2:	73fb      	strb	r3, [r7, #15]
+		break;
+ 80008b4:	bf00      	nop
+	}
+
+	void (*disResetHandler)(void) = (void*) FPEC_ReadWord(distBootStrtPage, 4);
+ 80008b6:	7bfb      	ldrb	r3, [r7, #15]
+ 80008b8:	2104      	movs	r1, #4
+ 80008ba:	4618      	mov	r0, r3
+ 80008bc:	f7ff fe22 	bl	8000504 <FPEC_ReadWord>
+ 80008c0:	4603      	mov	r3, r0
+ 80008c2:	60bb      	str	r3, [r7, #8]
+	if((u32)disResetHandler != 0xFFFFFFFF)   // If there's Bootloader in this destination
+ 80008c4:	68bb      	ldr	r3, [r7, #8]
+ 80008c6:	f1b3 3fff 	cmp.w	r3, #4294967295
+ 80008ca:	d01a      	beq.n	8000902 <jumpToBoot+0x7e>
+	{
+		ECU_UpdateConfig();
+ 80008cc:	f7ff fc5e 	bl	800018c <ECU_UpdateConfig>
+		NVIC_RealocateVectorTable(FLASH_REGION, FLASH_BASE + distBootStrtPage * PAGE_SIZE_BYTES);
+ 80008d0:	7bfb      	ldrb	r3, [r7, #15]
+ 80008d2:	029b      	lsls	r3, r3, #10
+ 80008d4:	f103 6300 	add.w	r3, r3, #134217728	; 0x8000000
+ 80008d8:	4619      	mov	r1, r3
+ 80008da:	2000      	movs	r0, #0
+ 80008dc:	f7ff feb0 	bl	8000640 <NVIC_RealocateVectorTable>
+ 80008e0:	2300      	movs	r3, #0
+ 80008e2:	603b      	str	r3, [r7, #0]
+  __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+ 80008e4:	683b      	ldr	r3, [r7, #0]
+ 80008e6:	f383 8814 	msr	CONTROL, r3
+		__set_CONTROL(0);     // Privilege mode + use MSP as Stack Pointer
+		__set_MSP(FPEC_ReadWord(distBootStrtPage, 0));    // Read initial Stack Pointer value, load it in MSP
+ 80008ea:	7bfb      	ldrb	r3, [r7, #15]
+ 80008ec:	2100      	movs	r1, #0
+ 80008ee:	4618      	mov	r0, r3
+ 80008f0:	f7ff fe08 	bl	8000504 <FPEC_ReadWord>
+ 80008f4:	4603      	mov	r3, r0
+ 80008f6:	607b      	str	r3, [r7, #4]
+  __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
+ 80008f8:	687b      	ldr	r3, [r7, #4]
+ 80008fa:	f383 8808 	msr	MSP, r3
+		disResetHandler();   // direct jump to destination App
+ 80008fe:	68bb      	ldr	r3, [r7, #8]
+ 8000900:	4798      	blx	r3
+	}
+}
+ 8000902:	bf00      	nop
+ 8000904:	3710      	adds	r7, #16
+ 8000906:	46bd      	mov	sp, r7
+ 8000908:	bd80      	pop	{r7, pc}
+ 800090a:	bf00      	nop
+ 800090c:	20000020 	.word	0x20000020
+
+08000910 <NMI_Handler>:
+/******************************************************************************/
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
+ 8000910:	b480      	push	{r7}
+ 8000912:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  while (1)
+ 8000914:	e7fe      	b.n	8000914 <NMI_Handler+0x4>
+
+08000916 <HardFault_Handler>:
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
+ 8000916:	b480      	push	{r7}
+ 8000918:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+ 800091a:	e7fe      	b.n	800091a <HardFault_Handler+0x4>
+
+0800091c <MemManage_Handler>:
+
+/**
+  * @brief This function handles Memory management fault.
+  */
+void MemManage_Handler(void)
+{
+ 800091c:	b480      	push	{r7}
+ 800091e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
+ 8000920:	e7fe      	b.n	8000920 <MemManage_Handler+0x4>
+
+08000922 <BusFault_Handler>:
+
+/**
+  * @brief This function handles Prefetch fault, memory access fault.
+  */
+void BusFault_Handler(void)
+{
+ 8000922:	b480      	push	{r7}
+ 8000924:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
+ 8000926:	e7fe      	b.n	8000926 <BusFault_Handler+0x4>
+
+08000928 <UsageFault_Handler>:
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  */
+void UsageFault_Handler(void)
+{
+ 8000928:	b480      	push	{r7}
+ 800092a:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
+ 800092c:	e7fe      	b.n	800092c <UsageFault_Handler+0x4>
+
+0800092e <SVC_Handler>:
+
+/**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
+ 800092e:	b480      	push	{r7}
+ 8000930:	af00      	add	r7, sp, #0
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
+ 8000932:	bf00      	nop
+ 8000934:	46bd      	mov	sp, r7
+ 8000936:	bc80      	pop	{r7}
+ 8000938:	4770      	bx	lr
+
+0800093a <DebugMon_Handler>:
+
+/**
+  * @brief This function handles Debug monitor.
+  */
+void DebugMon_Handler(void)
+{
+ 800093a:	b480      	push	{r7}
+ 800093c:	af00      	add	r7, sp, #0
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
+}
+ 800093e:	bf00      	nop
+ 8000940:	46bd      	mov	sp, r7
+ 8000942:	bc80      	pop	{r7}
+ 8000944:	4770      	bx	lr
+
+08000946 <PendSV_Handler>:
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
+ 8000946:	b480      	push	{r7}
+ 8000948:	af00      	add	r7, sp, #0
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
+ 800094a:	bf00      	nop
+ 800094c:	46bd      	mov	sp, r7
+ 800094e:	bc80      	pop	{r7}
+ 8000950:	4770      	bx	lr
+
+08000952 <SysTick_Handler>:
+
+/**
+  * @brief This function handles System tick timer.
+  */
+void SysTick_Handler(void)
+{
+ 8000952:	b580      	push	{r7, lr}
+ 8000954:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+ 8000956:	f000 f82f 	bl	80009b8 <HAL_IncTick>
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
+ 800095a:	bf00      	nop
+ 800095c:	bd80      	pop	{r7, pc}
+
+0800095e <SystemInit>:
+  * @note   This function should be used only after reset.
+  * @param  None
+  * @retval None
+  */
+void SystemInit (void)
+{
+ 800095e:	b480      	push	{r7}
+ 8000960:	af00      	add	r7, sp, #0
+
+  /* Configure the Vector Table location -------------------------------------*/
+#if defined(USER_VECT_TAB_ADDRESS)
+  SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */
+#endif /* USER_VECT_TAB_ADDRESS */
+}
+ 8000962:	bf00      	nop
+ 8000964:	46bd      	mov	sp, r7
+ 8000966:	bc80      	pop	{r7}
+ 8000968:	4770      	bx	lr
+	...
+
+0800096c <Reset_Handler>:
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 800096c:	480c      	ldr	r0, [pc, #48]	; (80009a0 <LoopFillZerobss+0x12>)
+  ldr r1, =_edata
+ 800096e:	490d      	ldr	r1, [pc, #52]	; (80009a4 <LoopFillZerobss+0x16>)
+  ldr r2, =_sidata
+ 8000970:	4a0d      	ldr	r2, [pc, #52]	; (80009a8 <LoopFillZerobss+0x1a>)
+  movs r3, #0
+ 8000972:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 8000974:	e002      	b.n	800097c <LoopCopyDataInit>
+
+08000976 <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 8000976:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 8000978:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 800097a:	3304      	adds	r3, #4
+
+0800097c <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 800097c:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 800097e:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 8000980:	d3f9      	bcc.n	8000976 <CopyDataInit>
+  
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 8000982:	4a0a      	ldr	r2, [pc, #40]	; (80009ac <LoopFillZerobss+0x1e>)
+  ldr r4, =_ebss
+ 8000984:	4c0a      	ldr	r4, [pc, #40]	; (80009b0 <LoopFillZerobss+0x22>)
+  movs r3, #0
+ 8000986:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000988:	e001      	b.n	800098e <LoopFillZerobss>
+
+0800098a <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 800098a:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 800098c:	3204      	adds	r2, #4
+
+0800098e <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 800098e:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000990:	d3fb      	bcc.n	800098a <FillZerobss>
+
+/* Call the clock system intitialization function.*/
+    bl  SystemInit
+ 8000992:	f7ff ffe4 	bl	800095e <SystemInit>
+/* Call static constructors */
+    bl __libc_init_array
+ 8000996:	f000 f821 	bl	80009dc <__libc_init_array>
+/* Call the application's entry point.*/
+  bl main
+ 800099a:	f7ff ff0d 	bl	80007b8 <main>
+  bx lr
+ 800099e:	4770      	bx	lr
+  ldr r0, =_sdata
+ 80009a0:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 80009a4:	20000004 	.word	0x20000004
+  ldr r2, =_sidata
+ 80009a8:	08000a44 	.word	0x08000a44
+  ldr r2, =_sbss
+ 80009ac:	20000004 	.word	0x20000004
+  ldr r4, =_ebss
+ 80009b0:	20000028 	.word	0x20000028
+
+080009b4 <ADC1_2_IRQHandler>:
+ * @retval : None
+*/
+    .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 80009b4:	e7fe      	b.n	80009b4 <ADC1_2_IRQHandler>
+	...
+
+080009b8 <HAL_IncTick>:
+  * @note This function is declared as __weak to be overwritten in case of other
+  *      implementations in user file.
+  * @retval None
+  */
+__weak void HAL_IncTick(void)
+{
+ 80009b8:	b480      	push	{r7}
+ 80009ba:	af00      	add	r7, sp, #0
+  uwTick += uwTickFreq;
+ 80009bc:	4b05      	ldr	r3, [pc, #20]	; (80009d4 <HAL_IncTick+0x1c>)
+ 80009be:	781b      	ldrb	r3, [r3, #0]
+ 80009c0:	461a      	mov	r2, r3
+ 80009c2:	4b05      	ldr	r3, [pc, #20]	; (80009d8 <HAL_IncTick+0x20>)
+ 80009c4:	681b      	ldr	r3, [r3, #0]
+ 80009c6:	4413      	add	r3, r2
+ 80009c8:	4a03      	ldr	r2, [pc, #12]	; (80009d8 <HAL_IncTick+0x20>)
+ 80009ca:	6013      	str	r3, [r2, #0]
+}
+ 80009cc:	bf00      	nop
+ 80009ce:	46bd      	mov	sp, r7
+ 80009d0:	bc80      	pop	{r7}
+ 80009d2:	4770      	bx	lr
+ 80009d4:	20000000 	.word	0x20000000
+ 80009d8:	20000024 	.word	0x20000024
+
+080009dc <__libc_init_array>:
+ 80009dc:	b570      	push	{r4, r5, r6, lr}
+ 80009de:	2500      	movs	r5, #0
+ 80009e0:	4e0c      	ldr	r6, [pc, #48]	; (8000a14 <__libc_init_array+0x38>)
+ 80009e2:	4c0d      	ldr	r4, [pc, #52]	; (8000a18 <__libc_init_array+0x3c>)
+ 80009e4:	1ba4      	subs	r4, r4, r6
+ 80009e6:	10a4      	asrs	r4, r4, #2
+ 80009e8:	42a5      	cmp	r5, r4
+ 80009ea:	d109      	bne.n	8000a00 <__libc_init_array+0x24>
+ 80009ec:	f000 f81a 	bl	8000a24 <_init>
+ 80009f0:	2500      	movs	r5, #0
+ 80009f2:	4e0a      	ldr	r6, [pc, #40]	; (8000a1c <__libc_init_array+0x40>)
+ 80009f4:	4c0a      	ldr	r4, [pc, #40]	; (8000a20 <__libc_init_array+0x44>)
+ 80009f6:	1ba4      	subs	r4, r4, r6
+ 80009f8:	10a4      	asrs	r4, r4, #2
+ 80009fa:	42a5      	cmp	r5, r4
+ 80009fc:	d105      	bne.n	8000a0a <__libc_init_array+0x2e>
+ 80009fe:	bd70      	pop	{r4, r5, r6, pc}
+ 8000a00:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 8000a04:	4798      	blx	r3
+ 8000a06:	3501      	adds	r5, #1
+ 8000a08:	e7ee      	b.n	80009e8 <__libc_init_array+0xc>
+ 8000a0a:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 8000a0e:	4798      	blx	r3
+ 8000a10:	3501      	adds	r5, #1
+ 8000a12:	e7f2      	b.n	80009fa <__libc_init_array+0x1e>
+ 8000a14:	08000a3c 	.word	0x08000a3c
+ 8000a18:	08000a3c 	.word	0x08000a3c
+ 8000a1c:	08000a3c 	.word	0x08000a3c
+ 8000a20:	08000a40 	.word	0x08000a40
+
+08000a24 <_init>:
+ 8000a24:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a26:	bf00      	nop
+ 8000a28:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a2a:	bc08      	pop	{r3}
+ 8000a2c:	469e      	mov	lr, r3
+ 8000a2e:	4770      	bx	lr
+
+08000a30 <_fini>:
+ 8000a30:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a32:	bf00      	nop
+ 8000a34:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a36:	bc08      	pop	{r3}
+ 8000a38:	469e      	mov	lr, r3
+ 8000a3a:	4770      	bx	lr

@@ -1,0 +1,7 @@
+serverComm.c:36:11:u8ToStr	24	static
+serverComm.c:57:11:strToU8	24	static
+serverComm.c:72:13:ESP_SrvrRxDataCallBack	24	static
+serverComm.c:91:7:serverCommInit	8	static
+serverComm.c:104:7:serverTerminateConn	8	static
+serverComm.c:113:12:getEcuLatestVersion	40	static
+serverComm.c:206:12:getNextLineOfUpdate	24	static

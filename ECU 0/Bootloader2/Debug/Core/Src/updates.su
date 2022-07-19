@@ -1,0 +1,4 @@
+updates.c:23:13:CAN_CallBackFun	8	static
+updates.c:30:19:validateRes	16	static
+updates.c:54:7:updatesInit	64	static
+updates.c:93:12:updateImg	48	static

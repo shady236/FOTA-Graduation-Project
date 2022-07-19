@@ -1,0 +1,15 @@
+FPEC.c:24:14:FPEC_UnlockFlash	4	static
+FPEC.c:38:14:FPEC_LockFlash	4	static
+FPEC.c:51:22:FPEC_CheckErrors	4	static
+FPEC.c:79:15:FPEC_DirectWriteHalfWord	24	static
+FPEC.c:130:15:FPEC_DirectWriteByte	24	static
+FPEC.c:176:7:FPEC_InitFlash	8	static
+FPEC.c:206:15:FPEC_ErasePage	24	static
+FPEC.c:253:15:FPEC_WritePage	24	static
+FPEC.c:287:7:FPEC_ReadPage	32	static
+FPEC.c:310:6:FPEC_ReadHalfWord	24	static
+FPEC.c:332:5:FPEC_ReadByte	16	static
+FPEC.c:350:6:FPEC_ReadWord	24	static
+FPEC.c:371:15:FPEC_WriteHalfWord	1056	static
+FPEC.c:408:15:FPEC_WriteWord	1048	static
+FPEC.c:447:15:FPEC_WriteByte	1056	static

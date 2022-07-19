@@ -1,0 +1,5 @@
+srec.c:15:11:valueOfAsciiDigit	16	static
+srec.c:28:11:valueOfTwoAsciiDigits	24	static
+srec.c:35:13:strToNumArr	40	static
+srec.c:46:24:sRecordParse	32	static
+srec.c:215:25:srecHandle	40	static

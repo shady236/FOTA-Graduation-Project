@@ -1,0 +1,11 @@
+NVIC.c:5:7:NVIC_EnableInterrupt	16	static
+NVIC.c:19:7:NVIC_DisableInterrupt	16	static
+NVIC.c:33:7:NVIC_SetInterruptPending	16	static
+NVIC.c:43:7:NVIC_ClrInterruptPending	16	static
+NVIC.c:53:14:NVIC_GetInterruptState	24	static
+NVIC.c:68:7:NVIC_RealocateVectorTable	16	static
+NVIC.c:78:7:NVIC_SetGroupPriorityLevel	16	static
+NVIC.c:86:7:NVIC_ResetSystem	4	static
+NVIC.c:94:7:NVIC_SetInterruptPriority	24	static
+NVIC.c:110:7:NVIC_MaskIRQs	24	static,ignoring_inline_asm
+NVIC.c:116:7:NVIC_UnMaskIRQs	16	static,ignoring_inline_asm

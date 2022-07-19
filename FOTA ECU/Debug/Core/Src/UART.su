@@ -1,0 +1,9 @@
+UART.c:60:25:UART_CheckErrors	16	static
+UART.c:73:6:UART_Init	40	static
+UART.c:136:7:UART_TxChar	16	static
+UART.c:145:18:UART_RxCharBlocking	16	static
+UART.c:156:18:UART_RxCharUnblocking	16	static
+UART.c:167:7:UART_TxString	16	static
+UART.c:183:6:USART1_IRQHandler	8	static
+UART.c:207:6:USART2_IRQHandler	8	static
+UART.c:230:6:USART3_IRQHandler	8	static

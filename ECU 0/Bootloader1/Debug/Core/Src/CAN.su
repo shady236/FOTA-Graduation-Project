@@ -1,0 +1,5 @@
+CAN.c:6:7:USB_LP_CAN1_RX0_IRQHandler	8	static
+CAN.c:14:6:CAN_Init	32	static
+CAN.c:105:6:CAN_InitFilterBank	16	static
+CAN.c:310:6:CAN_Tx	24	static
+CAN.c:377:6:CAN_Rx	24	static

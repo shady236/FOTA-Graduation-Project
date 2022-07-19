@@ -1,0 +1,2 @@
+ECU_Config.c:6:7:ECU_LoadConfig	8	static
+ECU_Config.c:16:7:ECU_UpdateConfig	8	static
